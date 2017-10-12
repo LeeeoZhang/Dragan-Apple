@@ -100,10 +100,40 @@ let states = {
     //游戏场景
     play: function () {
         this.create = function () {
-            game.stage.backgroundColor = '#444'
-            setTimeout(function () {
-                game.state.start('over')
-            }, 3000)
+
+            //创建分数
+            let score = 0
+            //创建背景音乐
+            let backgroundMusic = game.add.audio('bgMusic')
+            backgroundMusic.loopFull()  //循环播放
+            //创建其他音效
+            let scoreMusic = game.add.audio('scoreMusic')
+            let bombMusic = game.add.audio('bombMusic')
+
+            //添加背景
+            let backgroundImage = game.add.image(0, 0, 'bg')
+            backgroundImage.width = game.world.width
+            backgroundImage.height = game.world.height
+
+            //添加主角
+            let man = game.add.sprite(game.world.centerX, game.world.height * 0.75, 'dude')
+            let manImage = game.cache.getImage('dude')
+            man.width = game.world.width*0.2
+            man.height = man.width / manImage.width * manImage.height
+            man.anchor.setTo(0.5,0.5)
+
+            //添加分数
+            let title = game.add.text(game.world.centerX * 0.25, game.world.height * 0.1, '0', {
+                fontSize: '40px',
+                fonteWeight: 'bold',
+                fill: '#000'
+            })
+            title.anchor.setTo(0.5, 0.5)
+
+            //监听滑动事件
+            game.input.addMoveCallback(function(pointer,x,y,isTap){
+                if(!isTap) man.x = x
+            })
         }
     },
 
